@@ -17,8 +17,10 @@ class HomeScreenBloc {
   void getAllTasks(int isCompleted) async {
     List<Task> tasks = await taskApiProvider.getAllTasks(isCompleted);
     if (isCompleted == 0) {
+      print('not completed');
       _taskSubject.sink.add(tasks);
     } else {
+      print('completed');
       _completedTaskSubject.sink.add(tasks);
     }
   }

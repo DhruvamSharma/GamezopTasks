@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 class Task {
   @JsonKey(name: 'task_id')
@@ -8,6 +9,11 @@ class Task {
   String _description;
   @JsonKey(name: 'is_completed')
   bool _isCompleted;
+
+  set createdDate(DateTime value) {
+    _createdDate = value;
+  }
+
   @JsonKey(name: 'image_path')
   String _imagePath;
   @JsonKey(name: 'created_date')
@@ -16,6 +22,8 @@ class Task {
   DateTime _dueDate;
   @JsonKey(name: 'finished_date')
   DateTime _finishedDate;
+//  @JsonKey(name: 'due_time')
+//  TimeOfDay _dueTime;
 
 
   int get taskId => _taskId;
@@ -50,6 +58,7 @@ class Task {
           resolveDate(map[i]['created_date']),
           resolveDate(map[i]['due_date']),
           resolveDate(map[i]['finished_date'])
+          //resolveTime(map[i]['due_time'])
       );
       taskList.add(task);
     }
@@ -81,4 +90,19 @@ class Task {
   DateTime get dueDate => _dueDate;
 
   DateTime get finishedDate => _finishedDate;
+
+
+  void setIsCompleted(bool value) {
+    _isCompleted = value;
+  }
+
+  void setFinishedDate(DateTime value) {
+    _finishedDate = value;
+  }
+
+//  TimeOfDay get dueTime => _dueTime;
+//
+//  static TimeOfDay resolveTime(String dueTime) {
+//    return
+//  }
 }

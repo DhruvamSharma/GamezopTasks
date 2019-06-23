@@ -3,9 +3,10 @@ import 'package:gamez_taskop/src/bloc/home_screen_bloc.dart';
 import 'package:gamez_taskop/src/model/task.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
 
 class CreateTaskScreen extends StatefulWidget {
-
   @override
   _CreateTaskScreenState createState() => _CreateTaskScreenState();
 }
@@ -16,6 +17,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       _imageController = TextEditingController();
 
   File _image;
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay dueTime = TimeOfDay.now();
+  final dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
 
   Future getImage(bool isCamera) async {
     File image;
@@ -66,24 +70,35 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               controller: _imageController,
               decoration: InputDecoration(helperText: 'Image'),
             ),
-            MaterialButton(
-              child: Text('Create', style: TextStyle(color: Colors.white),),
-              color: Colors.indigo,
-                onPressed: () async {
-              int taskId = await homeScreenBloc.createTask(Task.fromTask(
-                _titleController.text,
-                _descriptionController.text,
-                false,
-                _imageController.text,
-                DateTime.now(),
-                DateTime.now().add(Duration(days: 5)),
-                DateTime.now().add(Duration(days: 100)),
-              ));
 
-              if (taskId > 0) {
-                // TODO provide humane feedback
-              }
-            })
+            DateTimePickerFormField(
+              format: dateFormat,
+              dateOnly: false,
+              onChanged: (date) {
+                selectedDate = date;
+              },
+            ),
+            MaterialButton(
+                child: Text(
+                  'Create',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.indigo,
+                onPressed: () async {
+                  int taskId = await homeScreenBloc.createTask(Task.fromTask(
+                    _titleController.text,
+                    _descriptionController.text,
+                    false,
+                    _imageController.text,
+                    DateTime.now(),
+                    selectedDate,
+                    DateTime.now().add(Duration(days: 100)),
+                  ));
+
+                  if (taskId > 0) {
+                    // TODO provide humane feedback
+                  }
+                })
           ],
         ),
       ),

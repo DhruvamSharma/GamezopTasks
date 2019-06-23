@@ -29,6 +29,7 @@ dependencies:
   path_provider:
   json_annotation:
   image_picker:
+  datetime_picker_formfield: ^0.1.1
 
 dev_dependencies:
   flutter_test:
