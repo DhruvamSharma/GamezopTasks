@@ -4,17 +4,12 @@ import 'package:gamez_taskop/src/resources/user_api_provider.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
-}
-
-enum TaskStyle{
-  LIST,
-  CARD
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -84,16 +79,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.indigo,
                     child: Text('Sign Up', style: TextStyle(color: Colors.white),),
                     onPressed: () async {
-                      if (userNameController.text.isEmpty || _profileImage == null) {
+                      if (userNameController.text.isEmpty) {
                         // TODO give humane feedback
                       } else {
                         await userApiProvider.createUser(
                             User.fromUser(
                               userNameController.text,
-                              _profileImage.path,
+                              _profileImage == null ? '' :_profileImage.path,
                               true,
                             )
                         );
+
+                        SharedPreferences preferences = await SharedPreferences.getInstance();
+                        preferences.setString('user_name', userNameController.text);
 
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                           return HomeScreen();

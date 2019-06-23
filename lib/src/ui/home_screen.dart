@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/bloc/home_screen_bloc.dart';
 import 'package:gamez_taskop/src/ui/task_cards.dart';
 import 'package:gamez_taskop/src/ui/task_list.dart';
+import 'package:gamez_taskop/src/ui/user_profile.dart';
 import 'create_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,6 +35,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           }),
           IconButton(icon: Icon(Icons.style), onPressed: () {
             homeScreenBloc.setListOrCard(false);
+          }),
+
+          IconButton(icon: Icon(Icons.account_circle), onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return UserProfileScreen();
+            }));
           }),
         ],
         title: Text(

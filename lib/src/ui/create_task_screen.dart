@@ -70,15 +70,16 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 children: <Widget>[
                   TextField(
                     controller: _titleController,
-                    decoration: InputDecoration(helperText: 'Title'),
+                    decoration: InputDecoration(labelText: 'Title'),
                   ),
                   TextField(
                     controller: _descriptionController,
-                    decoration: InputDecoration(helperText: 'Description'),
+                    decoration: InputDecoration(labelText: 'Description'),
                   ),
 
                   DateTimePickerFormField(
                     format: dateFormat,
+                    decoration: InputDecoration(labelText: 'Due Date'),
                     dateOnly: false,
                     onChanged: (date) {
                       selectedDate = date;

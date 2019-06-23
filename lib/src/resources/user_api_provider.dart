@@ -26,6 +26,16 @@ class UserApiProvider {
     }
   }
 
+  Future<User> getUser(String userName) async {
+    final db = await DBProvider.db.database;
+    List<Map<String, dynamic>> map = await db.query(
+      'users',
+      where: 'user_name = ?',
+      whereArgs: [userName],
+    );
+    return User.userFromMap(map[0]);
+  }
+
   Future<bool> isFirstTime() async {
     final db = await DBProvider.db.database;
     int count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM users'));

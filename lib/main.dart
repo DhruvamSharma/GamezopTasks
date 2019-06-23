@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/resources/user_api_provider.dart';
 import 'package:gamez_taskop/src/ui/LoginScreen.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gamez_taskop/src/ui/home_screen.dart';
 
 void main() => runApp(MyApp());
@@ -35,18 +35,22 @@ class _MyAppState extends State<MyApp> {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.indigo,
+        brightness: Brightness.light
       ),
-      home: FutureBuilder<bool>(
-        future: userApiProvider.isFirstTime(),
+      home: FutureBuilder<SharedPreferences>(
+        future: SharedPreferences.getInstance(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(body: Center(child: Container()));
           } else if (snapshot.hasData) {
-            if (snapshot.data) {
+            String userName = snapshot.data.get('user_name') ?? '';
+            if (userName.isNotEmpty) {
               return HomeScreen();
             } else {
               return LoginScreen();
             }
+          } else {
+            return Container();
           }
         },
       ),
