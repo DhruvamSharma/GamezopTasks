@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/bloc/home_screen_bloc.dart';
 import 'package:gamez_taskop/src/ui/task_cards.dart';
-import 'package:gamez_taskop/src/ui/incomplete_task_list.dart';
-import 'completed_task_list.dart';
+import 'package:gamez_taskop/src/ui/task_list.dart';
 import 'create_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,7 +25,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
+        actionsIconTheme: IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.list,), onPressed: () {
+            homeScreenBloc.setListOrCard(true);
+          }),
+          IconButton(icon: Icon(Icons.style), onPressed: () {
+            homeScreenBloc.setListOrCard(false);
+          }),
+        ],
         title: Text(
           'Gamezop Tasks',
           style:
@@ -58,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
                     if (snapshot.data) {
-                      return IncompleteTaskList(isCompleted: 0, );
+                      return TaskList(isCompleted: 0, );
                     } else {
                       return TaskCards(isCompleted: 0);
                     }
@@ -75,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
                     if (snapshot.data) {
-                      return CompletedTaskList(isCompleted: 1,);
+                      return TaskList(isCompleted: 1,);
                     } else {
                       return TaskCards(isCompleted: 1,);
                     }

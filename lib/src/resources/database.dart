@@ -16,11 +16,19 @@ class DBProvider {
     return _database;
   }
 
-  initDB() async {
+  Future<Database> initDB() async {
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, "TasksDB.db");
+    String path = join(databasePath, "NewDatabase.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
+
+      await db.execute("CREATE TABLE users ("
+          "user_id INTEGER PRIMARY KEY,"
+          "user_name TEXT,"
+          "user_image_path TEXT,"
+          "is_logged_in BIT"
+          ")");
+
       await db.execute("CREATE TABLE tasks ("
           "task_id INTEGER PRIMARY KEY,"
           "title TEXT,"

@@ -3,16 +3,14 @@ import 'package:gamez_taskop/src/bloc/home_screen_bloc.dart';
 import 'package:gamez_taskop/src/model/task.dart';
 import 'package:gamez_taskop/src/ui/single_task_screen.dart';
 
-import 'common/task_list.dart';
-
-class IncompleteTaskList extends StatefulWidget {
+class TaskList extends StatefulWidget {
   final int isCompleted;
-  IncompleteTaskList({this.isCompleted}): assert(isCompleted != null);
+  TaskList({this.isCompleted}): assert(isCompleted != null);
   @override
-  _IncompleteTaskListState createState() => _IncompleteTaskListState();
+  _TaskListState createState() => _TaskListState();
 }
 
-class _IncompleteTaskListState extends State<IncompleteTaskList> {
+class _TaskListState extends State<TaskList> {
 
   List<bool> taskStatus = List<bool>();
 
@@ -26,7 +24,7 @@ class _IncompleteTaskListState extends State<IncompleteTaskList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Task>>(
-        stream: homeScreenBloc.incompleteTaskStream,
+        stream: widget.isCompleted == 0 ? homeScreenBloc.incompleteTaskStream : homeScreenBloc.completeTaskStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -68,8 +66,14 @@ class _IncompleteTaskListState extends State<IncompleteTaskList> {
   }
 
   void changeTaskState(Task task, bool isCompleted) {
+    if (isCompleted) {
+      task.setFinishedDate(DateTime.now());
+      homeScreenBloc.changeTaskState(task);
+    } else {
+      task.setDueDate(DateTime.now().add(Duration(days: 1)));
+      task.setFinishedDate(null);
+    }
     task.setIsCompleted(isCompleted);
-    task.setFinishedDate(DateTime.now());
     homeScreenBloc.changeTaskState(task);
   }
 }
