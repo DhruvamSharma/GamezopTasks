@@ -2,15 +2,21 @@ import 'package:gamez_taskop/src/model/task.dart';
 import 'package:gamez_taskop/src/resources/task_api_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'home_screen_bloc.dart';
+
 class SingleTaskScreenBloc {
 
 
-  void updateTask(Task task) async {
-    await taskApiProvider.updateTask(task);
+  Future<int> updateTask(Task task) async {
+    int updatedRowCount = await taskApiProvider.updateTask(task);
+    homeScreenBloc.getAllTasks(0);
+    return updatedRowCount;
   }
 
   Future<int> deleteTask(Task task) async {
-    return await taskApiProvider.deleteTask(task);
+    int deletedRowCount =  await taskApiProvider.deleteTask(task);
+    homeScreenBloc.getAllTasks(0);
+    return deletedRowCount;
   }
 
   void dispose() {

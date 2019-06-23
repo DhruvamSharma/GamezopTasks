@@ -85,8 +85,8 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: MaterialButton(
-                    onPressed: () {
-                      singleTaskBloc.updateTask(
+                    onPressed: () async {
+                      int updatedRowCount = await singleTaskBloc.updateTask(
                           Task(
                               widget.task.taskId,
                               _titleController.text,
@@ -97,6 +97,9 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                               widget.task.dueDate,
                               widget.task.finishedDate,
                           ));
+                      if (updatedRowCount > 0) {
+                        // TODO show humane feedback
+                      }
                     },
                     child: Text('Update',  style: TextStyle(color: Colors.white),),
                     color: Colors.indigo
