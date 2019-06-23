@@ -42,6 +42,7 @@ class TaskApiProvider {
 
   // This method updates the task with the required @args
   Future<int> updateTask(Task task) async {
+    print('${task.isCompleted}');
     final db = await DBProvider.db.database;
     return await db.update(
       'tasks',
@@ -59,6 +60,10 @@ class TaskApiProvider {
       where: 'task_id = ?',
       whereArgs: [task.taskId],
     );
+  }
+
+  changeTaskState(Task task) {
+    updateTask(task);
   }
 }
 

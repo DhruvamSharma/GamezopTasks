@@ -15,17 +15,26 @@ class CommonTaskList extends StatefulWidget {
 }
 
 class _CommonTaskListState extends State<CommonTaskList> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return ListView.builder(
       itemCount: widget.taskList.length,
       itemBuilder: (context, i) {
         return ListTile(
+          key: Key('${widget.taskList[i].taskId} $i'),
           title: Text('${widget.taskList[i].title}'),
           trailing: Checkbox(
               value: widget.taskList[i].isCompleted,
               onChanged: (value) {
-                changeTaskState(widget.taskList[i].taskId, value);
+                changeTaskState(widget.taskList[i], value);
               }),
           onTap: () {
             Navigator.of(context)
@@ -38,10 +47,8 @@ class _CommonTaskListState extends State<CommonTaskList> {
     );
   }
 
-  void changeTaskState(int taskId, bool isCompleted) {
-    setState(() {
-      isCompleted = true;
-    });
-    homeScreenBloc.changeTaskState(taskId, isCompleted);
+  void changeTaskState(Task task, bool isCompleted) {
+    task.setIsCompleted(isCompleted);
+    homeScreenBloc.changeTaskState(task);
   }
 }

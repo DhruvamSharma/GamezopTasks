@@ -42,7 +42,7 @@ class Task {
       'image_path': task._imagePath,
       'created_date': task._createdDate.toIso8601String(),
       'due_date': task._dueDate.toIso8601String(),
-      'finished_date': task._finishedDate.toIso8601String()
+      'finished_date': task.finishedDate == null ? '': task._finishedDate.toIso8601String()
     };
   }
 
@@ -57,7 +57,7 @@ class Task {
           map[i]['image_path'],
           resolveDate(map[i]['created_date']),
           resolveDate(map[i]['due_date']),
-          resolveDate(map[i]['finished_date'])
+          map[i]['finished_date'].toString().isEmpty ? null :resolveDate(map[i]['finished_date'])
           //resolveTime(map[i]['due_time'])
       );
       taskList.add(task);
@@ -98,6 +98,10 @@ class Task {
 
   void setFinishedDate(DateTime value) {
     _finishedDate = value;
+  }
+
+  void setDueDate(DateTime value) {
+    _dueDate = value;
   }
 
 //  TimeOfDay get dueTime => _dueTime;

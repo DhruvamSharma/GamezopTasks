@@ -37,71 +37,87 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          'Create A New Task',
-          style: Theme.of(context).textTheme.title,
-        ),
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(helperText: 'Title'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: InputDecoration(helperText: 'Description'),
-            ),
-            IconButton(
-              onPressed: () {
-                getImage(true);
-              },
-              icon: Icon(Icons.camera_alt),
-            ),
-            TextField(
-              controller: _imageController,
-              decoration: InputDecoration(helperText: 'Image'),
-            ),
 
-            DateTimePickerFormField(
-              format: dateFormat,
-              dateOnly: false,
-              onChanged: (date) {
-                selectedDate = date;
-              },
+    return Material(
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 200,
+            title: Text('Task Detail'),
+            actions: <Widget>[
+              IconButton(
+                onPressed: () {
+                  getImage(true);
+                },
+                icon: Icon(Icons.camera_alt),
+              ),
+            ],
+            flexibleSpace: FlexibleSpaceBar(
+              background: _image == null
+                  ? Image.network(
+                'https://mdl.ferlicot.fr/files/MDLDemoLibrary/metaphor.png',
+                fit: BoxFit.cover,
+              )
+                  : Image.file(_image, fit: BoxFit.cover,),
             ),
-            MaterialButton(
-                child: Text(
-                  'Create',
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: Colors.indigo,
-                onPressed: () async {
-                  int taskId = await homeScreenBloc.createTask(Task.fromTask(
-                    _titleController.text,
-                    _descriptionController.text,
-                    false,
-                    _imageController.text,
-                    DateTime.now(),
-                    selectedDate,
-                    DateTime.now().add(Duration(days: 100)),
-                  ));
+          ),
 
-                  if (taskId > 0) {
-                    // TODO provide humane feedback
-                  }
-                })
-          ],
-        ),
+          SliverList(delegate: SliverChildListDelegate([
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: _titleController,
+                    decoration: InputDecoration(helperText: 'Title'),
+                  ),
+                  TextField(
+                    controller: _descriptionController,
+                    decoration: InputDecoration(helperText: 'Description'),
+                  ),
+
+                  DateTimePickerFormField(
+                    format: dateFormat,
+                    dateOnly: false,
+                    onChanged: (date) {
+                      selectedDate = date;
+                    },
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: MaterialButton(
+                          child: Text(
+                            'Create',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Colors.indigo,
+                          onPressed: () async {
+                            int taskId = await homeScreenBloc.createTask(Task.fromTask(
+                              _titleController.text,
+                              _descriptionController.text,
+                              false,
+                              _imageController.text,
+                              DateTime.now(),
+                              selectedDate,
+                              null,
+                            ));
+
+                            if (taskId > 0) {
+                              // TODO provide humane feedback
+                            }
+                          }),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ])),
+        ],
       ),
     );
+
   }
 }

@@ -71,7 +71,10 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
                       'https://mdl.ferlicot.fr/files/MDLDemoLibrary/metaphor.png',
                       fit: BoxFit.cover,
                     )
-                  : Image.file(File.fromUri(Uri.parse(widget.task.imagePath))),
+                  : Image.file(
+                      File.fromUri(Uri.parse(widget.task.imagePath)),
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
           SliverList(
@@ -88,10 +91,6 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
                   TextField(
                     controller: _descriptionController,
                     decoration: InputDecoration(helperText: 'Description'),
-                  ),
-                  TextField(
-                    controller: _imageController,
-                    decoration: InputDecoration(helperText: 'Image'),
                   ),
                   DateTimePickerFormField(
                     format: dateFormat,
