@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/bloc/home_screen_bloc.dart';
 import 'package:gamez_taskop/src/model/task.dart';
 
-import 'update_task.dart';
+import 'single_task_screen.dart';
 
 class TaskList extends StatefulWidget {
   @override
@@ -27,6 +27,10 @@ class _TaskListState extends State<TaskList> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData) {
+
+            if (snapshot.data.length == 0) {
+              return Center(child: Text('No Tasks Presents'));
+            }
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, i) {
@@ -40,7 +44,7 @@ class _TaskListState extends State<TaskList> {
                   onTap: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                          return UpdateTaskScreen(task: snapshot.data[i]);
+                          return SingleTaskScreen(task: snapshot.data[i]);
                     }));
                   },
                 );
