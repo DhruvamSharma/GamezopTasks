@@ -16,9 +16,7 @@ class SingleTaskScreen extends StatefulWidget {
 }
 
 class _SingleTaskScreenState extends State<SingleTaskScreen> {
-  TextEditingController _titleController,
-      _descriptionController,
-      _imageController;
+  TextEditingController _titleController, _descriptionController;
 
   File _image;
   DateTime selectedDate = DateTime.now();
@@ -45,7 +43,6 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
     _titleController = TextEditingController(text: widget.task.title);
     _descriptionController =
         TextEditingController(text: widget.task.description);
-    _imageController = TextEditingController(text: widget.task.imagePath);
     super.initState();
   }
 
@@ -86,15 +83,17 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
                 children: <Widget>[
                   TextField(
                     controller: _titleController,
-                    decoration: InputDecoration(helperText: 'Title'),
+                    decoration: InputDecoration(labelText: 'Title'),
                   ),
                   TextField(
                     controller: _descriptionController,
-                    decoration: InputDecoration(helperText: 'Description'),
+                    decoration: InputDecoration(labelText: 'Description'),
                   ),
                   DateTimePickerFormField(
                     format: dateFormat,
+                    decoration: InputDecoration(labelText: 'Due Date'),
                     dateOnly: false,
+                    initialValue: widget.task.dueDate,
                     initialDate: widget.task.dueDate,
                     onChanged: (date) {
                       selectedDate = date;
@@ -108,20 +107,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: MaterialButton(
                           onPressed: () async {
-                            int deletedRowCount =
-                                await singleTaskBloc.deleteTask(Task(
-                              widget.task.taskId,
-                              _titleController.text,
-                              _descriptionController.text,
-                              widget.task.isCompleted,
-                              '',
-                              widget.task.createdDate,
-                              widget.task.dueDate,
-                              widget.task.finishedDate,
-                            ));
-                            if (deletedRowCount > 0) {
-                              Navigator.of(context).pop();
-                            }
+                            deleteTask();
                           },
                           child: Text(
                             'Delete',
@@ -133,26 +119,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: MaterialButton(
                             onPressed: () async {
-                              int updatedRowCount =
-                                  await singleTaskBloc.updateTask(
-                                Task(
-                                  widget.task.taskId,
-                                  _titleController.text,
-                                  _descriptionController.text,
-                                  widget.task.isCompleted,
-                                  _image == null
-                                      ? widget.task.imagePath
-                                      : _image.path,
-                                  widget.task.createdDate,
-                                  selectedDate == null
-                                      ? widget.task.dueDate
-                                      : selectedDate,
-                                  widget.task.finishedDate,
-                                ),
-                              );
-                              if (updatedRowCount > 0) {
-                                // TODO show humane feedback
-                              }
+                              updateTask();
                             },
                             child: Text(
                               'Update',
@@ -169,5 +136,39 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
         ],
       ),
     );
+  }
+
+  deleteTask() async {
+    int deletedRowCount = await singleTaskBloc.deleteTask(Task(
+      widget.task.taskId,
+      _titleController.text,
+      _descriptionController.text,
+      widget.task.isCompleted,
+      '',
+      widget.task.createdDate,
+      widget.task.dueDate,
+      widget.task.finishedDate,
+    ));
+    if (deletedRowCount > 0) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  updateTask() async {
+    int updatedRowCount = await singleTaskBloc.updateTask(
+      Task(
+        widget.task.taskId,
+        _titleController.text,
+        _descriptionController.text,
+        widget.task.isCompleted,
+        _image == null ? widget.task.imagePath : _image.path,
+        widget.task.createdDate,
+        selectedDate == null ? widget.task.dueDate : selectedDate,
+        widget.task.finishedDate,
+      ),
+    );
+    if (updatedRowCount > 0) {
+      // TODO show humane feedback
+    }
   }
 }
