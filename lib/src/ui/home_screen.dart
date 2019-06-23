@@ -9,11 +9,15 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
+
+  TabController _tabController;
+
   @override
   void initState() {
     // TODO: implement initState
     homeScreenBloc.setListOrCard(true);
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -21,40 +25,79 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
+        actionsIconTheme: IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.list,), onPressed: () {
+            homeScreenBloc.setListOrCard(true);
+          }),
+          IconButton(icon: Icon(Icons.style), onPressed: () {
+            homeScreenBloc.setListOrCard(false);
+          }),
+        ],
         title: Text(
           'Gamezop Tasks',
-          style: Theme.of(context).textTheme.title.copyWith(
-            color: Colors.white
-          ),
+          style:
+              Theme.of(context).textTheme.title.copyWith(color: Colors.white),
         ),
+        bottom: TabBar(
+          controller: _tabController,
+            tabs: [
+          Tab(
+            text: 'Incomplete',
+          ),
+          Tab(
+            text: 'Completed',
+          )
+        ]),
         //backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: StreamBuilder<bool>(
-            stream: homeScreenBloc.listCardStream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasData) {
-                if (snapshot.data) {
-                  return TaskList();
-                } else {
-                  return TaskCards();
-                }
-              }
-            }),
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          Center(
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: StreamBuilder<bool>(
+                stream: homeScreenBloc.listCardStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasData) {
+                    if (snapshot.data) {
+                      return TaskList(isCompleted: 0, );
+                    } else {
+                      return TaskCards(isCompleted: 0);
+                    }
+                  }
+                }),
+          ),
+          Center(
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: StreamBuilder<bool>(
+                stream: homeScreenBloc.listCardStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasData) {
+                    if (snapshot.data) {
+                      return TaskList(isCompleted: 1,);
+                    } else {
+                      return TaskCards(isCompleted: 1,);
+                    }
+                  }
+                }),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
-          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return CreateTaskScreen();
           }));
-
         },
         tooltip: 'Create a task',
         child: Icon(Icons.add),

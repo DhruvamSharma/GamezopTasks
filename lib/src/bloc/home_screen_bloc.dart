@@ -4,17 +4,21 @@ import 'package:rxdart/rxdart.dart';
 
 class HomeScreenBloc {
 
-
   Stream<bool> get listCardStream => _listCardSubject.stream;
   final _listCardSubject = BehaviorSubject<bool>();
 
-  Stream<List<Task>> get taskStream => _taskSubject.stream;
+  Stream<List<Task>> get incompleteTaskStream => _taskSubject.stream;
   final _taskSubject = BehaviorSubject<List<Task>>();
+
+  Stream<List<Task>> get completeTaskStream => _completedTaskSubject.stream;
+  final _completedTaskSubject = BehaviorSubject<List<Task>>();
 
   void getAllTasks(int isCompleted) async {
     List<Task> tasks = await taskApiProvider.getAllTasks(isCompleted);
     if (isCompleted == 0) {
       _taskSubject.sink.add(tasks);
+    } else {
+      _completedTaskSubject.sink.add(tasks);
     }
   }
 
@@ -31,11 +35,13 @@ class HomeScreenBloc {
   void dispose() {
     _listCardSubject.close();
     _taskSubject.close();
+    _completedTaskSubject.close();
   }
 
-  void changeTaskState(int taskId, bool isCompleted) async {
-    //await taskApiProvider.changeTaskState(taskId, isCompleted);
-    getAllTasks(0);
+  void changeTaskState(Task task) async {
+    await taskApiProvider.changeTaskState(task);
+    await Future.delayed(Duration(milliseconds: 300));
+    getAllTasks(task.isCompleted? 0:1);
   }
 }
 

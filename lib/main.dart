@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:gamez_taskop/src/resources/user_api_provider.dart';
+import 'package:gamez_taskop/src/ui/LoginScreen.dart';
 
 import 'package:gamez_taskop/src/ui/home_screen.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,8 +36,20 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.indigo,
       ),
-      home: HomeScreen(),
+      home: FutureBuilder<bool>(
+        future: userApiProvider.isFirstTime(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(body: Center(child: Container()));
+          } else if (snapshot.hasData) {
+            if (snapshot.data) {
+              return HomeScreen();
+            } else {
+              return LoginScreen();
+            }
+          }
+        },
+      ),
     );
   }
 }
-
