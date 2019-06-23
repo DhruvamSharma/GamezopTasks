@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/bloc/home_screen_bloc.dart';
-import 'package:gamez_taskop/src/model/task.dart';
-import 'package:gamez_taskop/src/resources/task_api_provider.dart';
 import 'package:gamez_taskop/src/ui/task_cards.dart';
-
 import 'package:gamez_taskop/src/ui/task_list.dart';
+import 'create_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -22,6 +20,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: Text(
+          'Gamezop Tasks',
+          style: Theme.of(context).textTheme.title.copyWith(
+            color: Colors.white
+          ),
+        ),
+        //backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -41,15 +50,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          homeScreenBloc.createTask(Task.fromTask(
-            'title',
-            'description',
-            false,
-            'image_path',
-            DateTime.now(),
-            DateTime.now().add(Duration(days: 5)),
-            DateTime.now().add(Duration(days: 100)),
-          ));
+
+          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+            return CreateTaskScreen();
+          }));
+
         },
         tooltip: 'Create a task',
         child: Icon(Icons.add),

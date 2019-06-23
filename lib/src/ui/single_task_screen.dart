@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/bloc/single_task_screen_bloc.dart';
 import 'package:gamez_taskop/src/model/task.dart';
 
-class UpdateTaskScreen extends StatefulWidget {
+class SingleTaskScreen extends StatefulWidget {
   final Task task;
 
-  UpdateTaskScreen({this.task}) : assert(task != null);
+  SingleTaskScreen({this.task}) : assert(task != null);
 
   @override
-  _UpdateTaskScreenState createState() => _UpdateTaskScreenState();
+  _SingleTaskScreenState createState() => _SingleTaskScreenState();
 }
 
-class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
+class _SingleTaskScreenState extends State<SingleTaskScreen> {
   TextEditingController _titleController,
       _descriptionController,
       _imageController;

@@ -18,9 +18,10 @@ class HomeScreenBloc {
     }
   }
 
-  void createTask(Task task) async {
-    await taskApiProvider.createTask(task);
+  Future<int> createTask(Task task) async {
+    int taskId = await taskApiProvider.createTask(task);
     getAllTasks(0);
+    return taskId;
   }
 
   void setListOrCard (bool listOrCard) {
