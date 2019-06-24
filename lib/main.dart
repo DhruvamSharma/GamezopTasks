@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.indigo,
-        brightness: Brightness.light
+        brightness: Brightness.light,
       ),
       // This widget checks if any user is present in the shared preferences.
       home: FutureBuilder<SharedPreferences>(

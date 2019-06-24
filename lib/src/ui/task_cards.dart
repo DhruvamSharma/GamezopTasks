@@ -46,10 +46,22 @@ class _TaskCardsState extends State<TaskCards> {
                     return Card(
                       elevation: 5,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Image.network(
                             'https://mdl.ferlicot.fr/files/MDLDemoLibrary/metaphor.png',
-                            fit: BoxFit.cover,
+                            height: 300,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(snapshot.data[i].title,
+                                    style: Theme.of(context).textTheme.title),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -59,7 +71,7 @@ class _TaskCardsState extends State<TaskCards> {
                     if (orientation == CardSwipeOrientation.LEFT) {
                       print('left');
                     } else if (orientation == CardSwipeOrientation.RIGHT) {
-                      print('right');
+                      //changeTaskState(snapshot.data[i], widget.isCompleted == 0 ? true : false);
                     } else if (orientation == CardSwipeOrientation.TOP) {
                       print('top');
                     } else if (orientation == CardSwipeOrientation.BOTTOM) {
@@ -69,5 +81,17 @@ class _TaskCardsState extends State<TaskCards> {
                 ));
           }
         });
+  }
+
+  void changeTaskState(Task task, bool isCompleted) {
+    if (isCompleted) {
+      task.setFinishedDate(DateTime.now());
+      homeScreenBloc.changeTaskState(task);
+    } else {
+      task.setDueDate(DateTime.now().add(Duration(days: 1)));
+      task.setFinishedDate(null);
+    }
+    task.setIsCompleted(isCompleted);
+    homeScreenBloc.changeTaskState(task);
   }
 }
