@@ -2,6 +2,9 @@ import 'package:gamez_taskop/src/model/task.dart';
 import 'package:gamez_taskop/src/resources/task_api_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
+// Home screen bloc that takes care of the requests form UI Controller and
+// pass them to the Database Provider
+// This helps in encapsulating the UI and providing an interface to the db.
 class HomeScreenBloc {
 
   Stream<bool> get listCardStream => _listCardSubject.stream;

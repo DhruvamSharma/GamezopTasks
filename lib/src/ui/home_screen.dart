@@ -5,6 +5,9 @@ import 'package:gamez_taskop/src/ui/task_list.dart';
 import 'package:gamez_taskop/src/ui/user_profile.dart';
 import 'create_task_screen.dart';
 
+// This widgets makes up the layout of the whole application
+// Appbar actions like showing tasks in cards or list or showing profile page.
+// An Extended FAB for creating new task.
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -65,8 +68,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         controller: _tabController,
         children: <Widget>[
           Center(
-            // Center is a layout widget. It takes a single child and positions it
-            // in the middle of the parent.
+            // This widget appears for the tasks that are incomplete.
             child: StreamBuilder<bool>(
                 stream: homeScreenBloc.listCardStream,
                 builder: (context, snapshot) {
@@ -82,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 }),
           ),
           Center(
-            // Center is a layout widget. It takes a single child and positions it
-            // in the middle of the parent.
+            // This widget appears for the tasks that are complete already.
             child: StreamBuilder<bool>(
                 stream: homeScreenBloc.listCardStream,
                 builder: (context, snapshot) {
@@ -100,14 +101,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      // This widgets helps in creating new tasks
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text('Create a Task'),
+        icon: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return CreateTaskScreen();
           }));
         },
         tooltip: 'Create a task',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

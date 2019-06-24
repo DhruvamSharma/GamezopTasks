@@ -2,32 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/model/user.dart';
 import 'package:gamez_taskop/src/resources/user_api_provider.dart';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'LoginScreen.dart';
+import 'login_screen.dart';
 
+// This widget makes us the profile screen.
+// There is no major functionality to the widget
+// but it present the user with a profile picture and user name
+// And a button to log out.
+// Log out button deletes the user data from shared preferences
 class UserProfileScreen extends StatefulWidget {
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  File _profileImage;
   TextEditingController userNameController = TextEditingController();
-
-  Future getImage(bool isCamera) async {
-    File image;
-    if (isCamera) {
-      image = await ImagePicker.pickImage(source: ImageSource.camera);
-    } else {
-      image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    }
-
-    setState(() {
-      _profileImage = image;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +49,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           CircleAvatar(
                             backgroundColor: Colors.indigo,
                             radius: 100,
-                            backgroundImage: snapshot2.data.userImagePath.isEmpty
+                            backgroundImage: snapshot2
+                                    .data.userImagePath.isEmpty
                                 ? NetworkImage(
                                     'https://lh3.googleusercontent.com/MmO7RTHiY8R8oK6fs10WKpueb8QaGI1ztvAjHwPMNMNn1VceUZykULl056c5dvZY-VQ')
                                 : FileImage(File.fromUri(
@@ -80,11 +71,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: MaterialButton(
-                            child: Text('Sign out', style: TextStyle(color: Colors.white),),
+                            child: Text(
+                              'Sign out',
+                              style: TextStyle(color: Colors.white),
+                            ),
                             color: Colors.indigo,
                             onPressed: () async {
                               await snapshot1.data.remove('user_name');
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
                                 return LoginScreen();
                               }));
                             },

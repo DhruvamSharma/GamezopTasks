@@ -6,6 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
+
+// This widget appears on screen when a particular task is clicked.
+// We can either delete or update a task details here.
+// Completing a task functionality is not here because of time constraints.
+// But can be easily done!
 class SingleTaskScreen extends StatefulWidget {
   final Task task;
 
@@ -138,6 +143,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
     );
   }
 
+  // This method deletes the task.
   deleteTask() async {
     int deletedRowCount = await singleTaskBloc.deleteTask(Task(
       widget.task.taskId,
@@ -154,6 +160,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
     }
   }
 
+  // This method updates the task.
   updateTask() async {
     int updatedRowCount = await singleTaskBloc.updateTask(
       Task(

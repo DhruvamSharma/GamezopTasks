@@ -3,6 +3,9 @@ import 'package:gamez_taskop/src/bloc/home_screen_bloc.dart';
 import 'package:gamez_taskop/src/model/task.dart';
 import 'package:gamez_taskop/src/ui/single_task_screen.dart';
 
+// This widget creates a list of tasks
+// @isCompleted argument make sure that the
+// list of the completed or incomplete tasks.
 class TaskList extends StatefulWidget {
   final int isCompleted;
   TaskList({this.isCompleted}): assert(isCompleted != null);
@@ -24,6 +27,7 @@ class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Task>>(
+      // This checks if the widget currently on the screen is of completed or incomplete tasks.
         stream: widget.isCompleted == 0 ? homeScreenBloc.incompleteTaskStream : homeScreenBloc.completeTaskStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
