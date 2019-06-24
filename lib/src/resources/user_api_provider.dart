@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'database.dart';
 
+// This Api provides the ability to interact with the user table, ie, 'users'
 class UserApiProvider {
 
   Future<int> createUser(User user) async {

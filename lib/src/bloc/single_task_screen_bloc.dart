@@ -3,6 +3,9 @@ import 'package:gamez_taskop/src/resources/task_api_provider.dart';
 
 import 'home_screen_bloc.dart';
 
+// Single task screen bloc that takes care of the requests form UI Controller and
+// pass them to the Database Provider
+// This helps in encapsulating the UI and providing an interface to the db.
 class SingleTaskScreenBloc {
 
 

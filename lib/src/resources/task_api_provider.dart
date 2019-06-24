@@ -1,6 +1,7 @@
 import '../model/task.dart';
 import 'database.dart';
 
+// This Api provides the ability to interact with the task table, ie, 'tasks'
 class TaskApiProvider {
   Future<int> createTask(Task task) async {
     final db = await DBProvider.db.database;

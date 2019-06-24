@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gamez_taskop/src/resources/user_api_provider.dart';
-import 'package:gamez_taskop/src/ui/LoginScreen.dart';
+import 'package:gamez_taskop/src/ui/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gamez_taskop/src/ui/home_screen.dart';
 
+// Start of the application
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -37,6 +38,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.indigo,
         brightness: Brightness.light
       ),
+      // This widget checks if any user is present in the shared preferences.
       home: FutureBuilder<SharedPreferences>(
         future: SharedPreferences.getInstance(),
         builder: (context, snapshot) {

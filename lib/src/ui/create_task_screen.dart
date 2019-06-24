@@ -6,6 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
+
+// This widget appears when we click on the extended fab.
+// It helps in creating a new task.
 class CreateTaskScreen extends StatefulWidget {
   @override
   _CreateTaskScreenState createState() => _CreateTaskScreenState();

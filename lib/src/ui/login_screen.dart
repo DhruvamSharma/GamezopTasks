@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home_screen.dart';
 
+// This widgets makes up the login screen that
+// appears only when there is no user signed up.
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -45,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 radius: 100,
                 backgroundImage: _profileImage == null
                     ? NetworkImage(
-                    'https://lh3.googleusercontent.com/MmO7RTHiY8R8oK6fs10WKpueb8QaGI1ztvAjHwPMNMNn1VceUZykULl056c5dvZY-VQ')
+                        'https://lh3.googleusercontent.com/MmO7RTHiY8R8oK6fs10WKpueb8QaGI1ztvAjHwPMNMNn1VceUZykULl056c5dvZY-VQ')
                     : FileImage(_profileImage),
               ),
               Positioned(
@@ -70,30 +72,36 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: InputDecoration(labelText: 'User Name'),
             ),
           ),
+          // This widget signs up the user and add the user name in the shared preferences.
+          // This makes sure that every time user opens up app, user does not have to sign in again!
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 MaterialButton(
-                  color: Colors.indigo,
-                    child: Text('Sign Up', style: TextStyle(color: Colors.white),),
+                    color: Colors.indigo,
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     onPressed: () async {
                       if (userNameController.text.isEmpty) {
                         // TODO give humane feedback
                       } else {
-                        await userApiProvider.createUser(
-                            User.fromUser(
-                              userNameController.text,
-                              _profileImage == null ? '' :_profileImage.path,
-                              true,
-                            )
-                        );
+                        await userApiProvider.createUser(User.fromUser(
+                          userNameController.text,
+                          _profileImage == null ? '' : _profileImage.path,
+                          true,
+                        ));
 
-                        SharedPreferences preferences = await SharedPreferences.getInstance();
-                        preferences.setString('user_name', userNameController.text);
+                        SharedPreferences preferences =
+                            await SharedPreferences.getInstance();
+                        preferences.setString(
+                            'user_name', userNameController.text);
 
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
                           return HomeScreen();
                         }));
                       }
