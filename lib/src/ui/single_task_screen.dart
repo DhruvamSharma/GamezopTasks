@@ -59,6 +59,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
           SliverAppBar(
             expandedHeight: 200,
             title: Text('Task Detail'),
+            centerTitle: true,
             actions: <Widget>[
               IconButton(
                 onPressed: () {

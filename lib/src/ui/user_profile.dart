@@ -88,6 +88,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ],
                   );
+                } else {
+                  return Container();
                 }
               },
             );

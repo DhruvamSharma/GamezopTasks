@@ -109,6 +109,13 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
+
+          Align(
+            alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Text('* Beware of the UI of this particular app'),
+              )),
         ],
       ),
     );
