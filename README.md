@@ -1,6 +1,11 @@
 # gamez_taskop
 
-A todo app 
+A todo application that helps out with most of the TODO requirements.
+The list of requirements is listed here: https://github.com/DhruvamSharma/GamezopTasks/blob/master/docs/React-Native-Task.docx
+
+Screenshots:
+
+<img src = "https://github.com/DhruvamSharma/GamezopTasks/blob/master/docs/profile_screen.png" width260 height=500> <img src = "https://github.com/DhruvamSharma/GamezopTasks/blob/master/docs/incomplete_task_list.png" width260 height=500> <img src = "https://github.com/DhruvamSharma/GamezopTasks/blob/master/docs/completed_task_list.png" width260 height=500> <img src = "https://github.com/DhruvamSharma/GamezopTasks/blob/master/docs/single_task_screen.png" width260 height=500> <img src = "https://github.com/DhruvamSharma/GamezopTasks/blob/master/docs/card_layout.png" width260 height=500>
 
 ## Getting Started
 
